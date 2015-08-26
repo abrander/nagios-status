@@ -1,5 +1,5 @@
 {
-    "name": "abrander/NagStatus",
+    "name": "abrander/nagios-status",
     "description": "Parses Nagios's status.dat file",
     "keywords": ["nagios", "nagios3"],
     "type": "library",
