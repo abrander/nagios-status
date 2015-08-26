@@ -68,7 +68,7 @@ class StatusBase {
 	public static function unmarshal($value, $type) {
 		switch($type) {
 			case self::NAGIOS_TIMESTAMP:
-				return new DateTime("@{$value}");
+				return new \DateTime("@{$value}");
 				break;
 			case self::NAGIOS_STRING:
 				return (string) $value;
