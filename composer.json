@@ -1,0 +1,18 @@
+{
+    "name": "abrander/NagStatus",
+    "description": "Parses Nagios's status.dat file",
+    "keywords": ["nagios", "nagios3"],
+    "type": "library",
+    "homepage": "http://github.com/abrander/nagstatus",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Anders Brander",
+            "email": "anders@brander.dk",
+            "homepage": "http://github.com/abrander/"
+        }
+    ],
+    "autoload": {
+        "psr-4": {"NagStatus\\": "src"}
+    }
+}
