@@ -19,7 +19,7 @@ class ServiceStatus extends StatusBase {
 		'check_latency' => self::NAGIOS_FLOAT,
 		'check_type' => self::NAGIOS_INTEGER,
 		'current_state' => self::NAGIOS_INTEGER, // FIXME
-		'last_hard_state' => self::NAGIOS_TIMESTAMP,
+		'last_hard_state' => self::NAGIOS_INTEGER,
 		'last_event_id' => self::NAGIOS_INTEGER,
 		'current_event_id' => self::NAGIOS_INTEGER,
 		'current_problem_id' => self::NAGIOS_INTEGER,
