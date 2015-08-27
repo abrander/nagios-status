@@ -2,7 +2,7 @@
 
 namespace NagStatus;
 
-class StatusBase {
+class StatusBase implements \JsonSerializable {
 	const NAGIOS_TIMESTAMP = 0x1;
 	const NAGIOS_STRING = 0x2;
 	const NAGIOS_BOOLEAN = 0x3;
@@ -89,6 +89,30 @@ class StatusBase {
 				trigger_error(__CLASS__ . '::' . __FUNCTION__ . "(): Not sure how to unmarshall {$type}");
 				break;
 		}
+	}
+
+	public function jsonSerialize() {
+		$jsonObject = [];
+		foreach ($this->fields as $key => $type) {
+			switch($type) {
+				case self::NAGIOS_TIMESTAMP:
+					// Mimic Javascript's Date object JSON marshalling
+					$jsonObject[$key] = $this->$key->format('Y-m-d\TH:i:s.000\Z');
+					break;
+				case self::NAGIOS_STRING:
+				case self::NAGIOS_BOOLEAN:
+				case self::NAGIOS_INTEGER:
+				case self::NAGIOS_FLOAT:
+				case self::NAGIOS_UNKNOWN:
+					$jsonObject[$key] = $this->$key;
+					break;
+				default:
+					trigger_error(__CLASS__ . '::' . __FUNCTION__ . "(): Not sure how to serialize {$type}");
+					break;
+			}
+		}
+
+		return $jsonObject;
 	}
 }
 
