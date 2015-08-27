@@ -68,7 +68,11 @@ class StatusBase implements \JsonSerializable {
 	public static function unmarshal($value, $type) {
 		switch($type) {
 			case self::NAGIOS_TIMESTAMP:
-				return new \DateTime("@{$value}");
+				if ($value == 0) {
+					return NULL;
+				} else {
+					return new \DateTime("@{$value}");
+				}
 				break;
 			case self::NAGIOS_STRING:
 				return (string) $value;
@@ -96,8 +100,12 @@ class StatusBase implements \JsonSerializable {
 		foreach ($this->fields as $key => $type) {
 			switch($type) {
 				case self::NAGIOS_TIMESTAMP:
-					// Mimic Javascript's Date object JSON marshalling
-					$jsonObject[$key] = $this->$key->format('Y-m-d\TH:i:s.000\Z');
+					if (is_null($this->$key)) {
+						$jsonObject[$key] = NULL;
+					} else {
+						// Mimic Javascript's Date object JSON marshalling
+						$jsonObject[$key] = $this->$key->format('Y-m-d\TH:i:s.000\Z');
+					}
 					break;
 				case self::NAGIOS_STRING:
 				case self::NAGIOS_BOOLEAN:
