@@ -95,6 +95,11 @@ class StatusBase implements \JsonSerializable {
 		}
 	}
 
+	/**
+	 * Return a representation of the object suitable for JSON encoding.
+	 * @return {mixed} A new object representing the object with types
+	 * sanely marshalled for Javascript consumption
+	 */
 	public function jsonSerialize() {
 		$jsonObject = [];
 		foreach ($this->fields as $key => $type) {
