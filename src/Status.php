@@ -7,6 +7,15 @@ class Status {
 	var $hosts = [];
 	var $services = [];
 
+	// https://assets.nagios.com/downloads/nagioscore/docs/nagioscore/3/en/pluginapi.html
+	const SERVICE_OK = 0;
+	const SERVICE_WARNING = 1;
+	const SERVICE_CRITICAL = 2;
+	const SERVICE_UNKNOWN = 3;
+
+	const HOST_UP = 0;
+	const HOST_DOWN = 1;
+
 	public function readFromStatusFile($path) {
 		$handle = fopen($path, 'r');
 
