@@ -16,8 +16,18 @@ class Status {
 	const HOST_UP = 0;
 	const HOST_DOWN = 1;
 
+	/**
+	 * Read Nagios status from Nagios's status.dat file
+	 * @return {boolean} Returns TRUE if we file could be opened and
+	 * read, FALSE otherwise
+	 */
+
 	public function readFromStatusFile($path) {
-		$handle = fopen($path, 'r');
+		$handle = fopen($path, 'r', FALSE);
+
+		if ($handle === FALSE) {
+			return FALSE;
+		}
 
 		while ($line = StatusBase::readLine($handle)) {
 			switch($line) {
@@ -59,6 +69,8 @@ class Status {
 			}
 		}
 		fclose($handle);
+
+		return TRUE;
 	}
 }
 
