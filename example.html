@@ -1,0 +1,165 @@
+<!doctype html>
+<html ng-app="nag">
+ <head>
+  <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+  <style type="text/css">
+body {
+	margin: 10px;
+}
+
+/* Hide the scrollbar for common fullscreen resolutions */
+@media (width: 1920px) and (height: 1080px), (width: 1920px) and (height: 1200px) {
+	body {
+		overflow: hidden;
+	}
+}
+
+/* ok */
+.bg-success {
+	background-color: #88d066;
+}
+
+/* warning */
+.bg-warning {
+	background-color: #ffff00;
+}
+
+/* critical */
+.bg-danger {
+	background-color: #f88888;
+}
+
+/* unknown */
+.bg-info {
+	background-color: #ffbb55;
+}
+
+  </style>
+  <script>
+var nag = angular.module('nag', []);
+var Nag = {};
+
+/**
+ * Object to hold all angular controllers
+ * @type {!Array<!angular.Controller>}
+ */
+Nag.Controller = {};
+
+/**
+ * @ngInject
+ * @constructor
+ * @param {!angular.Interval} $interval
+ * @param {!angular.Http} $http
+ */
+Nag.Controller.Overview = function($interval, $http) {
+	var self = this;
+
+	this.overview = {
+		hosts: {
+			up: [],
+			down: []
+		},
+		services: {
+			ok: [],
+			warning: [],
+			critical: [],
+			unknown: []
+		}
+	};
+	this.errorMessage = null;
+
+	var updateView = function() {
+		self.numberOfHosts =
+			self.overview.hosts.up.length +
+			self.overview.hosts.down.length;
+
+		self.numberOfServices =
+			self.overview.services.ok.length +
+			self.overview.services.warning.length +
+			self.overview.services.critical.length +
+			self.overview.services.unknown.length;
+
+		var failedServices =
+			self.overview.services.warning.length +
+			self.overview.services.critical.length +
+			self.overview.services.unknown.length;
+	};
+
+	var getStats = function() {
+		var overviewPromise = $http.get('example.php?json').then(function overviewSuccess(response) {
+			var data = response.data;
+			self.overview = data;
+			updateView();
+			self.errorMessage = null;
+		}, function overviewError(response) {
+			self.errorMessage = "Error fetching Nagios status: " + response.statusText;
+		});
+	};
+	updateView();
+  getStats();
+	$interval(getStats, 30000);
+};
+nag.controller('Overview', Nag.Controller.Overview);
+
+</script>
+ </head>
+ <body ng-controller="Overview as overview">
+  <h1 class="bg-danger" ng-show="overview.errorMessage != null">{{overview.errorMessage}}</h1>
+  <div class="container-fluid" ng-show="overview.errorMessage == null">
+   <h2>{{ overview.numberOfHosts }} Hosts</h2>
+   <div class="row">
+    <div class="col-md-6 col-xs-6 img-rounded" ng-class="{'bg-success': overview.overview.hosts.up.length > 0}"><h1>Up</h1><h1>{{overview.overview.hosts.up.length}}</h1></div>
+    <div class="col-md-6 col-xs-6 img-rounded" ng-class="{'bg-danger': overview.overview.hosts.down.length > 0}"><h1>Down</h1><h1>{{overview.overview.hosts.down.length}}</h1></div>
+   </div>
+   <h2>{{ overview.numberOfServices }} Services</h2>
+   <div class="row">
+    <div class="col-md-3 col-xs-6 img-rounded" ng-class="{'bg-success': overview.overview.services.ok.length > 0}">
+     <h1>OK</h1>
+     <h1>{{overview.overview.services.ok.length}}</h1>
+    </div>
+    <div class="col-md-3 col-xs-6 img-rounded" ng-class="{'bg-warning': overview.overview.services.warning.length > 0}">
+     <h1>Warning</h1>
+     <h1>{{overview.overview.services.warning.length}}</h1>
+    </div>
+    <div class="col-md-3 col-xs-6 img-rounded" ng-class="{'bg-danger': overview.overview.services.critical.length > 0}">
+     <h1>Critical</h1>
+     <h1>{{overview.overview.services.critical.length}}</h1>
+    </div>
+    <div class="col-md-3 col-xs-6 img-rounded" ng-class="{'bg-info': overview.overview.services.unknown.length > 0}">
+     <h1>Unknown</h1>
+     <h1>{{overview.overview.services.unknown.length}}</h1>
+    </div>
+   </div>
+   <h2 ng-show="overview.overview.hosts.down.length > 0">Hosts down</h2>
+   <div class="row">
+    <table class="table">
+     <tr ng-repeat="host in overview.overview.hosts.down">
+      <td class="text-nowrap bg-danger">{{ host.host_name }}</td>
+      <td>{{ host.plugin_output }}</td>
+     </tr>
+    </table>
+   </div>
+   <h2 ng-show="(overview.overview.services.critical.length+overview.overview.services.warning.length+overview.overview.services.unknown.length) > 0">Services not ok</h2>
+   <div class="row">
+    <table class="table">
+     <tr ng-repeat="service in overview.overview.services.critical">
+      <td class="text-nowrap">{{ service.host_name }}</td>
+      <td class="text-nowrap bg-danger">{{ service.service_description }}</td>
+      <td>{{ service.plugin_output }}</td>
+     </tr>
+     <tr ng-repeat="service in overview.overview.services.warning">
+      <td class="text-nowrap">{{ service.host_name }}</td>
+      <td class="text-nowrap bg-warning">{{ service.service_description }}</td>
+      <td>{{ service.plugin_output }}</td>
+     </tr>
+     <tr ng-repeat="service in overview.overview.services.unknown">
+      <td class="text-nowrap">{{ service.host_name }}</td>
+      <td class="text-nowrap bg-info">{{ service.service_description }}</td>
+      <td>{{ service.plugin_output }}</td>
+     </tr>
+    </table>
+   </div>
+  </div>
+ </body>
+</html>
