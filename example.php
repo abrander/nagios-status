@@ -14,9 +14,6 @@ require("src/ProgramStatus.php");
 require("src/ServiceStatus.php");
 require("src/Status.php");
 
-//date_default_timezone_set('Europe/Copenhagen');
-error_reporting(-1);
-
 // Search for status.dat in common locations. Check status_file
 // configuration for Nagios
 $searchPath = [
