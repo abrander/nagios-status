@@ -3,6 +3,8 @@
  <head>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.4/angular.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/moment.js/2.9.0/moment.min.js"></script>
+  <script src="//cdnjs.cloudflare.com/ajax/libs/angular-moment/0.9.0/angular-moment.min.js"></script>
   <style type="text/css">
 body {
 	margin: 10px;
@@ -37,7 +39,7 @@ body {
 
   </style>
   <script>
-var nag = angular.module('nag', []);
+var nag = angular.module('nag', ['angularMoment']);
 var Nag = {};
 
 /**
@@ -135,6 +137,7 @@ nag.controller('Overview', Nag.Controller.Overview);
    <div class="row">
     <table class="table">
      <tr ng-repeat="host in overview.overview.hosts.down">
+      <td class="text-nowrap" am-time-ago="host.last_state_change"></td>
       <td class="text-nowrap bg-danger">{{ host.host_name }}</td>
       <td>{{ host.plugin_output }}</td>
      </tr>
@@ -143,17 +146,20 @@ nag.controller('Overview', Nag.Controller.Overview);
    <h2 ng-show="(overview.overview.services.critical.length+overview.overview.services.warning.length+overview.overview.services.unknown.length) > 0">Services not ok</h2>
    <div class="row">
     <table class="table">
-     <tr ng-repeat="service in overview.overview.services.critical">
+     <tr ng-repeat="service in overview.overview.services.critical | orderBy: 'last_state_change'">
+      <td class="text-nowrap" am-time-ago="service.last_state_change"></td>
       <td class="text-nowrap">{{ service.host_name }}</td>
       <td class="text-nowrap bg-danger">{{ service.service_description }}</td>
       <td>{{ service.plugin_output }}</td>
      </tr>
-     <tr ng-repeat="service in overview.overview.services.warning">
+     <tr ng-repeat="service in overview.overview.services.warning | orderBy: 'last_state_change'">
+      <td class="text-nowrap" am-time-ago="service.last_state_change"></td>
       <td class="text-nowrap">{{ service.host_name }}</td>
       <td class="text-nowrap bg-warning">{{ service.service_description }}</td>
       <td>{{ service.plugin_output }}</td>
      </tr>
-     <tr ng-repeat="service in overview.overview.services.unknown">
+     <tr ng-repeat="service in overview.overview.services.unknown | orderBy: 'last_state_change'">
+      <td class="text-nowrap" am-time-ago="service.last_state_change"></td>
       <td class="text-nowrap">{{ service.host_name }}</td>
       <td class="text-nowrap bg-info">{{ service.service_description }}</td>
       <td>{{ service.plugin_output }}</td>
