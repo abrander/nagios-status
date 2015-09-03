@@ -39,6 +39,19 @@ body {
 
   </style>
   <script>
+var changeFavicon = function(href) {
+	var existingLink = document.getElementById('linkico');
+	if (existingLink) {
+		document.head.removeChild(existingLink);
+	}
+
+	var link = document.createElement('link');
+	link.id = 'linkico';
+	link.rel = 'shortcut icon';
+	link.href = href;
+	document.head.appendChild(link);
+}
+
 var nag = angular.module('nag', ['angularMoment']);
 var Nag = {};
 
@@ -86,6 +99,16 @@ Nag.Controller.Overview = function($interval, $http) {
 			self.overview.services.warning.length +
 			self.overview.services.critical.length +
 			self.overview.services.unknown.length;
+
+		if (self.overview.services.critical.length > 0) {
+			changeFavicon('example-critical.ico');
+		} else if (self.overview.services.warning.length > 0) {
+			changeFavicon('example-warning.ico');
+		} else if (self.overview.services.unknown.length > 0) {
+			changeFavicon('example-unknown.ico');
+		} else {
+			changeFavicon('example-ok.ico');
+		}
 	};
 
 	var getStats = function() {
