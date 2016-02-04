@@ -3,7 +3,7 @@
     "description": "Parses Nagios's status.dat file",
     "keywords": ["nagios", "nagios3"],
     "type": "library",
-    "homepage": "http://github.com/abrander/nagstatus",
+    "homepage": "http://github.com/abrander/nagios-status",
     "license": "MIT",
     "authors": [
         {
