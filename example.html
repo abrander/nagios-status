@@ -18,24 +18,45 @@ body {
 	}
 }
 
+body {
+    background-color: #161616;
+    color: #eee0e4;
+}
+
+.container-fluid {
+    background-color: #1f1f1f;
+    margin: 5px;
+    border: solid 1px #262626;
+    padding: 0 20px 5px;
+}
+
+.table>tbody>tr>td {
+    border-color: transparent;
+}
+
+.img-rounded {
+    margin: 0px;
+    border: 1px solid #1f1f1f;
+}
+
 /* ok */
 .bg-success {
-	background-color: #88d066;
+	background-color: #7eb26d;
 }
 
 /* warning */
 .bg-warning {
-	background-color: #ffff00;
+    background-color: #d5ac0e;
 }
 
 /* critical */
 .bg-danger {
-	background-color: #f88888;
+	background-color: #890f02;
 }
 
 /* unknown */
 .bg-info {
-	background-color: #ffbb55;
+    background-color: #ef843c;
 }
 
   </style>
@@ -157,35 +178,39 @@ nag.controller('Overview', Nag.Controller.Overview);
      <h1>{{overview.overview.services.unknown.length}}</h1>
     </div>
    </div>
-   <h2 ng-show="overview.overview.hosts.down.length > 0">Hosts down</h2>
+  </div>
+  <div class="container-fluid" ng-show="overview.overview.hosts.down.length > 0">
+   <h2>Hosts down</h2>
    <div class="row">
     <table class="table">
-     <tr ng-repeat="host in overview.overview.hosts.down">
+     <tr ng-repeat="host in overview.overview.hosts.down" class="bg-danger">
       <td class="text-nowrap" am-time-ago="host.last_state_change"></td>
-      <td class="text-nowrap bg-danger">{{ host.host_name }}</td>
+      <td class="text-nowrap">{{ host.host_name }}</td>
       <td>{{ host.plugin_output }}</td>
      </tr>
     </table>
    </div>
-   <h2 ng-show="(overview.overview.services.critical.length+overview.overview.services.warning.length+overview.overview.services.unknown.length) > 0">Services not ok</h2>
+  </div>
+  <div class="container-fluid" ng-show="(overview.overview.services.critical.length+overview.overview.services.warning.length+overview.overview.services.unknown.length) > 0">
+   <h2>Services not ok</h2>
    <div class="row">
     <table class="table">
-     <tr ng-repeat="service in overview.overview.services.critical | orderBy: 'last_state_change'">
+     <tr ng-repeat="service in overview.overview.services.critical | orderBy: 'last_state_change'" class="bg-danger">
       <td class="text-nowrap" am-time-ago="service.last_state_change"></td>
       <td class="text-nowrap">{{ service.host_name }}</td>
-      <td class="text-nowrap bg-danger">{{ service.service_description }}</td>
+      <td class="text-nowrap">{{ service.service_description }}</td>
       <td>{{ service.plugin_output }}</td>
      </tr>
-     <tr ng-repeat="service in overview.overview.services.warning | orderBy: 'last_state_change'">
+     <tr ng-repeat="service in overview.overview.services.warning | orderBy: 'last_state_change'" class="bg-warning">
       <td class="text-nowrap" am-time-ago="service.last_state_change"></td>
       <td class="text-nowrap">{{ service.host_name }}</td>
-      <td class="text-nowrap bg-warning">{{ service.service_description }}</td>
+      <td class="text-nowrap">{{ service.service_description }}</td>
       <td>{{ service.plugin_output }}</td>
      </tr>
-     <tr ng-repeat="service in overview.overview.services.unknown | orderBy: 'last_state_change'">
+     <tr ng-repeat="service in overview.overview.services.unknown | orderBy: 'last_state_change'" class="bg-info">
       <td class="text-nowrap" am-time-ago="service.last_state_change"></td>
       <td class="text-nowrap">{{ service.host_name }}</td>
-      <td class="text-nowrap bg-info">{{ service.service_description }}</td>
+      <td class="text-nowrap">{{ service.service_description }}</td>
       <td>{{ service.plugin_output }}</td>
      </tr>
     </table>
