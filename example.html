@@ -133,10 +133,29 @@ Nag.Controller.Overview = function($interval, $http) {
 		}
 	};
 
+	var removeAcked = function(list) {
+		return list.filter(function(element){
+			return (element['acknowledgement_type'] == 0);
+		});
+	}
+
 	var getStats = function() {
 		var overviewPromise = $http.get('example.php?json').then(function overviewSuccess(response) {
 			var data = response.data;
-			self.overview = data;
+
+			self.overview = {
+				hosts: {
+					up: removeAcked(data.hosts.up),
+					down: removeAcked(data.hosts.down),
+				},
+				services: {
+					critical: removeAcked(data.services.critical),
+					ok: data.services.ok,
+					unknown: removeAcked(data.services.unknown),
+					warning: removeAcked(data.services.warning),
+				}
+			};
+
 			updateView();
 			self.errorMessage = null;
 		}, function overviewError(response) {
