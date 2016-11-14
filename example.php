@@ -47,6 +47,7 @@ $overview = [
 		'critical' => [],
 		'unknown' => []
 	],
+	'title' => ''
 ];
 
 foreach ($status->hosts as $hostname => $host) {
@@ -76,6 +77,8 @@ foreach ($status->hosts as $hostname => $host) {
 		}
 	}
 }
+
+$overview['title'] = file_get_contents('/etc/hostname');
 
 header('Content-Type: application/json');
 echo json_encode($overview);

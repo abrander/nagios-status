@@ -102,7 +102,8 @@ Nag.Controller.Overview = function($interval, $http) {
 			warning: [],
 			critical: [],
 			unknown: []
-		}
+		},
+		title: 'unknown'
 	};
 	this.errorMessage = null;
 
@@ -116,6 +117,9 @@ Nag.Controller.Overview = function($interval, $http) {
 			self.overview.services.warning.length +
 			self.overview.services.critical.length +
 			self.overview.services.unknown.length;
+
+		self.title =
+			self.overview.title;
 
 		var failedServices =
 			self.overview.services.warning.length +
@@ -153,7 +157,8 @@ Nag.Controller.Overview = function($interval, $http) {
 					ok: data.services.ok,
 					unknown: removeAcked(data.services.unknown),
 					warning: removeAcked(data.services.warning),
-				}
+				},
+				title: data.title
 			};
 
 			updateView();
@@ -173,6 +178,7 @@ nag.controller('Overview', Nag.Controller.Overview);
  <body ng-controller="Overview as overview">
   <h1 class="bg-danger" ng-show="overview.errorMessage != null">{{overview.errorMessage}}</h1>
   <div class="container-fluid" ng-show="overview.errorMessage == null">
+   <h2 class="text-center">{{ overview.title }}</h2>
    <h2>{{ overview.numberOfHosts }} Hosts</h2>
    <div class="row">
     <div class="col-md-6 col-xs-6 img-rounded" ng-class="{'bg-success': overview.overview.hosts.up.length > 0}"><h1>Up</h1><h1>{{overview.overview.hosts.up.length}}</h1></div>
