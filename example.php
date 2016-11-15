@@ -78,7 +78,7 @@ foreach ($status->hosts as $hostname => $host) {
 	}
 }
 
-$overview['title'] = file_get_contents('/etc/hostname');
+$overview['title'] = $_SERVER['SERVER_NAME'];
 
 header('Content-Type: application/json');
 echo json_encode($overview);
