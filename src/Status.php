@@ -29,7 +29,7 @@ class Status {
 			return FALSE;
 		}
 
-		while ($line = StatusBase::readLine($handle)) {
+		while ($line = NagiosBase::readLine($handle)) {
 			switch($line) {
 				case 'contactstatus {':
 					$c = new ContactStatus();

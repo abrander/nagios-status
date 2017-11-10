@@ -2,7 +2,7 @@
 
 namespace NagStatus;
 
-class HostStatus extends StatusBase {
+class HostStatus extends NagiosBase {
 	var $fields = [
 		'host_name' => self::NAGIOS_STRING,
 		'modified_attributes' => self::NAGIOS_INTEGER,

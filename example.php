@@ -6,7 +6,7 @@ if ($_SERVER['QUERY_STRING'] != 'json') {
 	exit();
 }
 
-require("src/StatusBase.php");
+require("src/NagiosBase.php");
 require("src/ContactStatus.php");
 require("src/HostStatus.php");
 require("src/Info.php");

@@ -2,7 +2,7 @@
 
 namespace NagStatus;
 
-class ContactStatus extends StatusBase {
+class ContactStatus extends NagiosBase {
 	var $fields = [
 		'contact_name' => self::NAGIOS_STRING,
 		'modified_attributes' => self::NAGIOS_INTEGER,
