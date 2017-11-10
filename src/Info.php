@@ -2,7 +2,7 @@
 
 namespace NagStatus;
 
-class Info extends StatusBase {
+class Info extends NagiosBase {
 	var $fields = [
 		'created' => self::NAGIOS_TIMESTAMP,
 		'version' => self::NAGIOS_STRING,

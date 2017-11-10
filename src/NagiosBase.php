@@ -2,7 +2,7 @@
 
 namespace NagStatus;
 
-class StatusBase implements \JsonSerializable {
+class NagiosBase implements \JsonSerializable {
 	const NAGIOS_TIMESTAMP = 0x1;
 	const NAGIOS_STRING = 0x2;
 	const NAGIOS_BOOLEAN = 0x3;
@@ -48,7 +48,7 @@ class StatusBase implements \JsonSerializable {
 				break;
 			}
 
-			list($key, $value) = explode('=', $line, 2);
+			list($key, $value) = preg_split('/\t|=/', $line);
 
 			if (array_key_exists($key, $this->fields)) {
 				$this->$key = self::unmarshal($value, $this->fields[$key]);
