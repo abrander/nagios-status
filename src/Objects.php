@@ -28,10 +28,16 @@ class Objects {
 					$this->commands[$command->command_name] = $command;
 					break;
 				case 'define contact {':
-					// FIXME: stub
+					$contact = new ContactObject();
+					$contact->readFromHandle($handle);
+
+					$this->contacts[$contact->contact_name] = $contact;
 					break;
 				case 'define contactgroup {':
-					// FIXME: stub
+					$contactgroup = new ContactGroupObject();
+					$contactgroup->readFromHandle($handle);
+
+					$this->contactgroups[$contactgroup->contactgroup_name] = $contactgroup;
 					break;
 				case 'define host {':
 					$host = new HostObject();
@@ -40,7 +46,10 @@ class Objects {
 					$this->hosts[$host->host_name] = $host;
 					break;
 				case 'define hostgroup {':
-					// FIXME: stub
+					$hostgroup = new HostGroupObject();
+					$hostgroup->readFromHandle($handle);
+
+					$this->hostgroups[$hostgroup->hostgroup_name] = $hostgroup;
 					break;
 				case 'define service {':
 					$service = new ServiceObject();
@@ -50,7 +59,10 @@ class Objects {
 					$this->hosts[$service->host_name]->services[$service->service_description] = $service;
 					break;
 				case 'define timeperiod {':
-					// FIXME: stub
+					$timeperiod = new TimePeriodObject();
+					$timeperiod->readFromHandle($handle);
+
+					$this->timeperiods[$timeperiod->timeperiod_name] = $timeperiod;
 					break;
 				default:
 					break;
