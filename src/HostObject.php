@@ -6,6 +6,7 @@ class HostObject extends NagiosBase {
 	protected $fields = [
 		'host_name' => self::NAGIOS_STRING,
 		'alias' => self::NAGIOS_STRING,
+		'contact_groups' => self::NAGIOS_STRING,
 		'address' => self::NAGIOS_STRING,
 		'check_command' => self::NAGIOS_STRING,
 		'contactsslack' => self::NAGIOS_STRING,
