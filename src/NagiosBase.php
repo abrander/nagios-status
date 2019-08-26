@@ -48,7 +48,7 @@ class NagiosBase implements \JsonSerializable {
 				break;
 			}
 
-			list($key, $value) = preg_split('/\t|=/', $line);
+			list($key, $value) = preg_split('/\t|=/', $line, 2);
 
 			if (array_key_exists($key, $this->fields)) {
 				$this->$key = self::unmarshal($value, $this->fields[$key]);
