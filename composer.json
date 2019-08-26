@@ -5,6 +5,7 @@
     "type": "library",
     "homepage": "http://github.com/abrander/nagios-status",
     "license": "MIT",
+    "version": "1.0.0",
     "authors": [
         {
             "name": "Anders Brander",
